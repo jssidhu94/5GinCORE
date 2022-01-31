@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+    mysql:
+        container_name: "mysql"
+        image: mysql:latest
+	expose:
+            - "3000"
+  - "8000"
+        volumes:
+            - ./oai_db2.sql:/docker-entrypoint-initdb.d/oai_db.sql
+            - ./mysql-healthcheck2.sh:/tmp/mysql-healthcheck.sh
+        environment:
+            - TZ=Europe/Paris
+            - MYSQL_DATABASE=oai_db
+            - MYSQL_USER=test
+            - MYSQL_PASSWORD=test
+            - MYSQL_ROOT_PASSWORD=linux
+        healthcheck:
+            test: /bin/bash -c "/tmp/mysql-healthcheck.sh"
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        network_mode: host
+            

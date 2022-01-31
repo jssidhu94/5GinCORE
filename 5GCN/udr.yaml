@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+    oai-udr:
+        container_name: "oai-udr"
+        image: oai-udr:latest
+        environment:
+            - TZ=Europe/Paris
+            - INSTANCE=0
+            - PID_DIRECTORY=/var/run
+            - UDR_INTERFACE_NAME_FOR_NUDR=eth0
+            - UDR_INTERFACE_PORT_FOR_NUDR=80
+            - UDR_INTERFACE_HTTP2_PORT_FOR_NUDR=8080
+            - UDR_API_VERSION=v1
+            - MYSQL_IPV4_ADDRESS=192.168.70.131
+            - MYSQL_USER=test
+            - MYSQL_PASS=test
+            - MYSQL_DB=oai_db
+            - WAIT_MYSQL=120
+        network_mode: host
+        volumes:
+            - ./udr-healthcheck.sh:/openair-udr/bin/udr-healthcheck.sh
+        healthcheck:
+            test: /bin/bash -c "/openair-udr/bin/udr-healthcheck.sh"
+            interval: 10s
+            timeout: 5s
+            retries: 5
