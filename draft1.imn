@@ -12,6 +12,63 @@ node n1 {
     iconcoords {406.0 195.0}
     labelcoords {408.0 177.0}
     custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('5gc.sh', )
+	cmdup=('bash 5gc.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:5gc.sh
+	custom-command 5gc.sh
+	config {
+	#!/bin/sh
+	
+	#gnome-terminal
+	cp /home/core/5GinCORE/ . -r
+	
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker
+	custom-command Docker
+	config {
+	files=('startdocker.sh', 'stopdocker.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
+	config {
+	#!/bin/sh
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	sleep 1
+	docker-compose -f ./5GinCORE/5GCN/mysql.yaml up -d
+	}
+    }
+    custom-config {
 	custom-config-id service:Docker-Test
 	custom-command Docker-Test
 	config {
@@ -68,28 +125,6 @@ node n1 {
 	}
     }
     custom-config {
-	custom-config-id service:UserDefined
-	custom-command UserDefined
-	config {
-	files=('5gc.sh', )
-	cmdup=('bash 5gc.sh', )
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined:5gc.sh
-	custom-command 5gc.sh
-	config {
-	#!/bin/sh
-	
-	#gnome-terminal
-	cp /home/core/oai-cn5g-fed/ . -r
-	
-	./oai-cn5g-fed/scripts/syncComponents.sh
-	
-	
-	}
-    }
-    custom-config {
 	custom-config-id service:StaticRoute
 	custom-command StaticRoute
 	config {
@@ -112,7 +147,7 @@ node n1 {
 	
 	}
     }
-    services {DefaultRoute Docker-Test SSH StaticRoute UserDefined}
+    services {Docker UserDefined}
     interface-peer {eth0 n3}
 }
 
@@ -133,8 +168,67 @@ node n2 {
 	!
     }
     canvas c1
-    iconcoords {650.0 526.0}
-    labelcoords {650.0 558.0}
+    iconcoords {707.0 527.0}
+    labelcoords {707.0 559.0}
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('5gc.sh', )
+	cmdup=('bash 5gc.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:5gc.sh
+	custom-command 5gc.sh
+	config {
+	#!/bin/sh
+	
+	#gnome-terminal
+	cp /home/core/5GinCORE/ . -r
+	
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker
+	custom-command Docker
+	config {
+	files=('startdocker.sh', 'stopdocker.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
+	config {
+	#!/bin/sh
+	sleep 24
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	sleep 1
+	docker-compose -f ./5GinCORE/5GCN/upf.yaml up -d
+	
+	}
+    }
     custom-config {
 	custom-config-id service:StaticRoute
 	custom-command StaticRoute
@@ -214,29 +308,7 @@ node n2 {
 	
 	}
     }
-    custom-config {
-	custom-config-id service:UserDefined
-	custom-command UserDefined
-	config {
-	files=('5gc.sh', )
-	cmdup=('bash 5gc.sh', )
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined:5gc.sh
-	custom-command 5gc.sh
-	config {
-	#!/bin/sh
-	
-	#gnome-terminal
-	cp /home/core/oai-cn5g-fed/ . -r
-	
-	./oai-cn5g-fed/scripts/syncComponents.sh
-	
-	
-	}
-    }
-    services {DefaultRoute Docker-Test SSH StaticRoute UserDefined}
+    services {Docker UserDefined}
     interface-peer {eth0 n3}
     interface-peer {eth1 n11}
     interface-peer {eth2 n10}
@@ -249,8 +321,8 @@ node n3 {
 	!
     }
     canvas c1
-    iconcoords {649.0 320.0}
-    labelcoords {649.0 344.0}
+    iconcoords {708.0 321.0}
+    labelcoords {708.0 345.0}
     interface-peer {e0 n1}
     interface-peer {e1 n2}
     interface-peer {e2 n4}
@@ -294,6 +366,65 @@ node n4 {
     canvas c1
     iconcoords {564.0 191.0}
     labelcoords {560.0 170.0}
+    custom-config {
+	custom-config-id service:Docker
+	custom-command Docker
+	config {
+	files=('startdocker.sh', 'stopdocker.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
+	config {
+	#!/bin/sh
+	sleep 4
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	sleep 1
+	docker-compose -f ./5GinCORE/5GCN/nrf.yaml up -d
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('5gc.sh', )
+	cmdup=('bash 5gc.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:5gc.sh
+	custom-command 5gc.sh
+	config {
+	#!/bin/sh
+	
+	#gnome-terminal
+	cp /home/core/5GinCORE/ . -r
+	
+	
+	}
+    }
     custom-config {
 	custom-config-id service:Docker-Test
 	custom-command Docker-Test
@@ -351,28 +482,6 @@ node n4 {
 	}
     }
     custom-config {
-	custom-config-id service:UserDefined
-	custom-command UserDefined
-	config {
-	files=('5gc.sh', )
-	cmdup=('bash 5gc.sh', )
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined:5gc.sh
-	custom-command 5gc.sh
-	config {
-	#!/bin/sh
-	
-	#gnome-terminal
-	cp /home/core/oai-cn5g-fed/ . -r
-	
-	./oai-cn5g-fed/scripts/syncComponents.sh
-	
-	
-	}
-    }
-    custom-config {
 	custom-config-id service:StaticRoute
 	custom-command StaticRoute
 	config {
@@ -395,7 +504,7 @@ node n4 {
 	
 	}
     }
-    services {DefaultRoute Docker-Test SSH StaticRoute UserDefined}
+    services {Docker UserDefined}
     interface-peer {eth0 n3}
 }
 
@@ -412,6 +521,65 @@ node n5 {
     canvas c1
     iconcoords {783.0 194.0}
     labelcoords {779.0 173.0}
+    custom-config {
+	custom-config-id service:Docker
+	custom-command Docker
+	config {
+	files=('startdocker.sh', 'stopdocker.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
+	config {
+	#!/bin/sh
+	sleep 14
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	sleep 1
+	docker-compose -f ./5GinCORE/5GCN/udm.yaml up -d
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('5gc.sh', )
+	cmdup=('bash 5gc.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:5gc.sh
+	custom-command 5gc.sh
+	config {
+	#!/bin/sh
+	
+	#gnome-terminal
+	cp /home/core/5GinCORE/ . -r
+	
+	
+	}
+    }
     custom-config {
 	custom-config-id service:Docker-Test
 	custom-command Docker-Test
@@ -470,28 +638,6 @@ node n5 {
 	}
     }
     custom-config {
-	custom-config-id service:UserDefined
-	custom-command UserDefined
-	config {
-	files=('5gc.sh', )
-	cmdup=('bash 5gc.sh', )
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined:5gc.sh
-	custom-command 5gc.sh
-	config {
-	#!/bin/sh
-	
-	#gnome-terminal
-	cp /home/core/oai-cn5g-fed/ . -r
-	
-	./oai-cn5g-fed/scripts/syncComponents.sh
-	
-	
-	}
-    }
-    custom-config {
 	custom-config-id service:StaticRoute
 	custom-command StaticRoute
 	config {
@@ -514,7 +660,7 @@ node n5 {
 	
 	}
     }
-    services {DefaultRoute Docker-Test SSH StaticRoute UserDefined}
+    services {Docker UserDefined}
     interface-peer {eth0 n3}
 }
 
@@ -544,10 +690,46 @@ node n6 {
 	custom-command 5gc.sh
 	config {
 	#!/bin/sh
-	sleep 75
-	cp /home/core/oai-cn5g-fed/ . -r
+	cp /home/core/5GinCORE/ . -r
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker
+	custom-command Docker
+	config {
+	files=('startdocker.sh', 'stopdocker.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
+	config {
+	#!/bin/sh
+	sleep 9
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	sleep 1
+	docker-compose -f ./5GinCORE/5GCN/udr.yaml up -d
 	
-	docker-compose -f ./oai-cn5g-fed/docker-compose/udr.yaml up -d
 	}
     }
     custom-config {
@@ -629,7 +811,7 @@ node n6 {
 	
 	}
     }
-    services {DefaultRoute Docker-Test SSH StaticRoute UserDefined}
+    services {Docker UserDefined}
     interface-peer {eth0 n3}
 }
 
@@ -646,6 +828,65 @@ node n7 {
     canvas c1
     iconcoords {1069.0 197.0}
     labelcoords {1065.0 176.0}
+    custom-config {
+	custom-config-id service:Docker
+	custom-command Docker
+	config {
+	files=('startdocker.sh', 'stopdocker.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
+	config {
+	#!/bin/sh
+	sleep 19
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	sleep 1
+	docker-compose -f ./5GinCORE/5GCN/ausf.yaml up -d
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('5gc.sh', )
+	cmdup=('bash 5gc.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:5gc.sh
+	custom-command 5gc.sh
+	config {
+	#!/bin/sh
+	
+	#gnome-terminal
+	cp /home/core/5GinCORE/ . -r
+	
+	
+	}
+    }
     custom-config {
 	custom-config-id service:Docker-Test
 	custom-command Docker-Test
@@ -703,28 +944,6 @@ node n7 {
 	}
     }
     custom-config {
-	custom-config-id service:UserDefined
-	custom-command UserDefined
-	config {
-	files=('5gc.sh', )
-	cmdup=('bash 5gc.sh', )
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined:5gc.sh
-	custom-command 5gc.sh
-	config {
-	#!/bin/sh
-	
-	#gnome-terminal
-	cp /home/core/oai-cn5g-fed/ . -r
-	
-	./oai-cn5g-fed/scripts/syncComponents.sh
-	
-	
-	}
-    }
-    custom-config {
 	custom-config-id service:StaticRoute
 	custom-command StaticRoute
 	config {
@@ -747,7 +966,7 @@ node n7 {
 	
 	}
     }
-    services {DefaultRoute Docker-Test SSH StaticRoute UserDefined}
+    services {Docker UserDefined}
     interface-peer {eth0 n3}
 }
 
@@ -764,6 +983,65 @@ node n8 {
     canvas c1
     iconcoords {406.0 321.0}
     labelcoords {402.0 300.0}
+    custom-config {
+	custom-config-id service:Docker
+	custom-command Docker
+	config {
+	files=('startdocker.sh', 'stopdocker.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
+	config {
+	#!/bin/sh
+	sleep 34
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	sleep 1
+	docker-compose -f ./5GinCORE/5GCN/amf.yaml up -d
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('5gc.sh', )
+	cmdup=('bash 5gc.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:5gc.sh
+	custom-command 5gc.sh
+	config {
+	#!/bin/sh
+	
+	#gnome-terminal
+	cp /home/core/5GinCORE/ . -r
+	
+	
+	}
+    }
     custom-config {
 	custom-config-id service:Docker-Test
 	custom-command Docker-Test
@@ -821,28 +1099,6 @@ node n8 {
 	}
     }
     custom-config {
-	custom-config-id service:UserDefined
-	custom-command UserDefined
-	config {
-	files=('5gc.sh', )
-	cmdup=('bash 5gc.sh', )
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined:5gc.sh
-	custom-command 5gc.sh
-	config {
-	#!/bin/sh
-	
-	#gnome-terminal
-	cp /home/core/oai-cn5g-fed/ . -r
-	
-	./oai-cn5g-fed/scripts/syncComponents.sh
-	
-	
-	}
-    }
-    custom-config {
 	custom-config-id service:StaticRoute
 	custom-command StaticRoute
 	config {
@@ -865,7 +1121,7 @@ node n8 {
 	
 	}
     }
-    services {DefaultRoute Docker-Test SSH StaticRoute UserDefined}
+    services {Docker UserDefined}
     interface-peer {eth0 n3}
 }
 
@@ -880,8 +1136,67 @@ node n9 {
 	!
     }
     canvas c1
-    iconcoords {1074.0 319.0}
-    labelcoords {1070.0 298.0}
+    iconcoords {1074.0 322.0}
+    labelcoords {1070.0 301.0}
+    custom-config {
+	custom-config-id service:Docker
+	custom-command Docker
+	config {
+	files=('startdocker.sh', 'stopdocker.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
+	config {
+	#!/bin/sh
+	sleep 39
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	sleep 1
+	docker-compose -f ./5GinCORE/5GCN/smf.yaml up -d
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('5gc.sh', )
+	cmdup=('bash 5gc.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:5gc.sh
+	custom-command 5gc.sh
+	config {
+	#!/bin/sh
+	
+	#gnome-terminal
+	cp /home/core/5GinCORE/ . -r
+	
+	
+	}
+    }
     custom-config {
 	custom-config-id service:Docker-Test
 	custom-command Docker-Test
@@ -939,28 +1254,6 @@ node n9 {
 	}
     }
     custom-config {
-	custom-config-id service:UserDefined
-	custom-command UserDefined
-	config {
-	files=('5gc.sh', )
-	cmdup=('bash 5gc.sh', )
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined:5gc.sh
-	custom-command 5gc.sh
-	config {
-	#!/bin/sh
-	
-	#gnome-terminal
-	cp /home/core/oai-cn5g-fed/ . -r
-	
-	./oai-cn5g-fed/scripts/syncComponents.sh
-	
-	
-	}
-    }
-    custom-config {
 	custom-config-id service:StaticRoute
 	custom-command StaticRoute
 	config {
@@ -983,7 +1276,7 @@ node n9 {
 	
 	}
     }
-    services {DefaultRoute Docker-Test SSH StaticRoute UserDefined}
+    services {Docker UserDefined}
     interface-peer {eth0 n3}
 }
 
@@ -1000,6 +1293,65 @@ node n10 {
     canvas c1
     iconcoords {1241.0 526.0}
     labelcoords {1241.0 558.0}
+    custom-config {
+	custom-config-id service:Docker
+	custom-command Docker
+	config {
+	files=('startdocker.sh', 'stopdocker.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
+	config {
+	#!/bin/sh
+	sleep 29
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	sleep 1
+	docker-compose -f ./5GinCORE/5GCN/dn.yaml up -d
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('5gc.sh', )
+	cmdup=('bash 5gc.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:5gc.sh
+	custom-command 5gc.sh
+	config {
+	#!/bin/sh
+	
+	#gnome-terminal
+	cp /home/core/5GinCORE/ . -r
+	
+	
+	}
+    }
     custom-config {
 	custom-config-id service:StaticRoute
 	custom-command StaticRoute
@@ -1080,29 +1432,7 @@ node n10 {
 	
 	}
     }
-    custom-config {
-	custom-config-id service:UserDefined
-	custom-command UserDefined
-	config {
-	files=('5gc.sh', )
-	cmdup=('bash 5gc.sh', )
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined:5gc.sh
-	custom-command 5gc.sh
-	config {
-	#!/bin/sh
-	
-	#gnome-terminal
-	cp /home/core/oai-cn5g-fed/ . -r
-	
-	./oai-cn5g-fed/scripts/syncComponents.sh
-	
-	
-	}
-    }
-    services {DefaultRoute Docker-Test SSH StaticRoute UserDefined}
+    services {Docker UserDefined}
     interface-peer {eth0 n2}
 }
 
@@ -1129,8 +1459,18 @@ node n11 {
 	custom-config-id service:UserDefined
 	custom-command UserDefined
 	config {
-	files=('5gc.sh', 'ueransim.sh', )
-	cmdup=('bash ueransim.sh', )
+	files=('5gc.sh', 'ueransim.sh', 'ran.sh', )
+	cmdup=('sh ran.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:ran.sh
+	custom-command ran.sh
+	config {
+	cp /home/core/5GinCORE/core-gnb.yaml .
+	cp /home/core/UERANSIM/ . -r
+	sleep 44
+	./UERANSIM/build/nr-gnb -c core-gnb.yaml
 	}
     }
     custom-config {
@@ -1146,9 +1486,48 @@ node n11 {
 	custom-config-id service:UserDefined:5gc.sh
 	custom-command 5gc.sh
 	config {
-	sleep 75
+	cp /home/core/5GinCORE/core-gnb.yaml .
 	cp /home/core/UERANSIM/ . -r
-	./UERANSIM/build/nr-gnb -c ./UERANSIM/config/core-gnb.yaml
+	sleep 44
+	./UERANSIM/build/nr-gnb -c core-gnb.yaml
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker
+	custom-command Docker
+	config {
+	files=('startdocker.sh', 'stopdocker.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
+	config {
+	#!/bin/sh
+	sleep 44
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	sleep 1
+	
 	}
     }
     custom-config {
@@ -1229,7 +1608,7 @@ node n11 {
 	
 	}
     }
-    services {DefaultRoute StaticRoute UserDefined}
+    services {UserDefined}
     interface-peer {eth0 n3}
     interface-peer {eth1 n2}
     interface-peer {eth2 n12}
@@ -1237,58 +1616,75 @@ node n11 {
 
 node n12 {
     type router
-    model ue
+    model UE
     network-config {
 	hostname UE
 	!
 	interface eth0
+	 ipv6 address 2001:0::1/64
 	 ip address 192.168.60.10/24
 	!
     }
     canvas c1
-    iconcoords {47.0 527.0}
-    labelcoords {53.0 566.0}
+    iconcoords {26.0 527.0}
+    labelcoords {26.0 559.0}
     interface-peer {eth0 n11}
     custom-config {
 	custom-config-id service:UserDefined
 	custom-command UserDefined
 	config {
-	files=('ueransim.sh', )
-	cmdup=('bash ueransim.sh', )
+	files=('5gran.sh', )
+	startidx=
+	cmdup=('sh 5gran.sh', )
 	}
     }
     custom-config {
-	custom-config-id service:UserDefined:ueransim.sh
-	custom-command ueransim.sh
+	custom-config-id service:UserDefined:5gran.sh
+	custom-command 5gran.sh
 	config {
+	cp /home/core/5GinCORE/core-ue.yaml .
 	cp /home/core/UERANSIM/ . -r
-	iptables -P FORWARD ACCEPT
+	gnome-terminal -e 'sh -c "echo Starting 5G Core Network; sleep 40; echo Started; echo Starting 5G RAN; sleep 5; echo Started; ./UERANSIM/build/nr-ue -c core-ue.yaml; exec bash"'
 	}
     }
     custom-config {
-	custom-config-id service:StaticRoute
-	custom-command StaticRoute
+	custom-config-id service:Docker
+	custom-command Docker
 	config {
-	files=('staticroute.sh', )
+	files=('startdocker.sh', 'stopdocker.sh', )
 	}
     }
     custom-config {
-	custom-config-id service:StaticRoute:staticroute.sh
-	custom-command staticroute.sh
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
 	config {
 	#!/bin/sh
-	# auto-generated by StaticRoute service (utility.py)
-	#
-	# NOTE: this service must be customized to be of any use
-	#       Below are samples that you can uncomment and edit.
-	#
-	#/sbin/ip route add 10.9.8.0/24 via 192.168.60.1
-	ip route add 192.168.72.0/24 via 192.168.60.11 dev eth0
-	ip route add 192.168.73.0/24 via 192.168.60.11 dev eth0
-	ip route add 192.168.70.128/26 via 192.168.60.11 dev eth0
+	sleep 49
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	sleep 1
 	}
     }
-    services {IPForward StaticRoute UserDefined}
+    services {UserDefined}
 }
 
 link l1 {

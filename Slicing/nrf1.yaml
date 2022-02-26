@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+    oai_nrf_slice12:
+        container_name: oai-nrf-slice12
+        image: oai-nrf:latest
+        environment:
+            - NRF_INTERFACE_NAME_FOR_SBI=eth0
+            - NRF_INTERFACE_PORT_FOR_SBI=80
+            - NRF_INTERFACE_HTTP2_PORT_FOR_SBI=8080
+            - NRF_API_VERSION=v1
+            - INSTANCE=0
+            - PID_DIRECTORY=/var/run
+        network_mode: host
+        volumes:
+            - ./nrf-healthcheck.sh:/openair-nrf/bin/nrf-healthcheck.sh
+        healthcheck:
+            test: /bin/bash -c "/openair-nrf/bin/nrf-healthcheck.sh"
+            interval: 10s
+            timeout: 5s
+            retries: 5

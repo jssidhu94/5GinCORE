@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+    oai_ext_dn:
+        image: ubuntu:webserver
+        privileged: true
+        container_name: oai-ext-dn
+        entrypoint: /bin/bash -c \
+              "service apache2 start;"\
+              "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE;"\
+              "ip route add 12.2.1.2/32 via 192.168.70.142 dev eth0;"\
+              "ip route add 12.1.1.129/32 via 192.168.70.143 dev eth0;"\
+              "ip route add 12.1.1.2/32 via 192.168.73.202 dev eth1; sleep infinity"
+        healthcheck:
+            test: /bin/bash -c "ip route"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+        network_mode: host

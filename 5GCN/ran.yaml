@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+     ran:
+        container_name: ran
+        image: ran:latest
+        privileged: true
+        environment:
+            # GNB Congig Parameters
+            - MCC=208
+            - MNC=95
+            - NCI=0x000000010
+            - TAC=0xa000
+            - LINK_IP=192.168.70.141
+            - NGAP_IP=192.168.70.141
+            - GTP_IP=192.168.72.141
+            - NGAP_PEER_IP=192.168.70.132
+            - SST=222
+            - SD=123
+            - IGNORE_STREAM_IDS=true
+        network_mode: host
+        healthcheck:
+            test: /bin/bash -c "ifconfig uesimtun0"
+            interval: 10s
+            timeout: 5s
+            retries: 5
