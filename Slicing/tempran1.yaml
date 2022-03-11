@@ -2,15 +2,15 @@ version: '3.8'
 services:
     gnbsim:
         container_name: gnbsim
-        image: rohankharade/gnbsim:latest
+        image: gnbsim:latest
         privileged: true
         environment:
             - MCC=208
             - MNC=95
             - GNBID=5
             - TAC=0x00a000
-            - SST=4
-            - SD=000004
+            - SST=2
+            - SD=000002
             - PagingDRX=v32
             - RANUENGAPID=0 
             - IMEISV=35609204079514
@@ -24,8 +24,8 @@ services:
             - NRCellID=1
             - USE_FQDN=no
             - NGAPPeerAddr=192.168.70.138
-            - GTPuLocalAddr=192.168.70.156
-            - GTPuIFname=eth1
+            - GTPuLocalAddr=192.168.70.152
+            - GTPuIFname=eth0
         network_mode: host
         healthcheck:
             test: /bin/bash -c "ifconfig gtp-gnb"

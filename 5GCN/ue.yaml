@@ -14,7 +14,7 @@ services:
             - AMF_VALUE=8000
             - IMEI=356938035643803
             - IMEI_SV=0035609204079514
-            - GNB_IP_ADDRESS=192.168.70.141
+            - GNB_IP_ADDRESS=192.168.60.11
             - PDU_TYPE=IPv4
             - APN=default
             - SST_C=1

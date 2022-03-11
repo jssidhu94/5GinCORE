@@ -1,0 +1,1 @@
+./UERANSIM/build/nr-gnb -c gNB1.yaml

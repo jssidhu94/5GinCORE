@@ -1,2 +1,2 @@
-FROM ubuntu:webserver
-COPY . /var/www/html/
+FROM gnbsim:latest
+RUN apt-get install nano

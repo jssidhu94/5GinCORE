@@ -30,7 +30,7 @@ services:
             - NRF_FQDN=oai_nrf_slice12
             - REGISTER_NRF=yes
             - DISCOVER_UPF=yes
-            - USE_FQDN_DNS=no
+            - USE_FQDN_DNS=yes
             - NSSAI_SST0=2
             - NSSAI_SD0=2
         volumes:

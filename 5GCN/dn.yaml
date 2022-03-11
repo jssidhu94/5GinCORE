@@ -4,10 +4,9 @@ services:
         image: ubuntu:webserver
         privileged: true
         container_name: "oai-ext-dn"
-        ports:
-            - "8080:80"
         entrypoint: /bin/bash -c \
+              "service apache2 start;"\
               "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE;"\
-              "ip route add 12.2.1.0/24 via 192.168.73.202 dev eth0; sleep infinity; service apache2 start"
+              "ip route add 12.2.1.0/24 via 192.168.73.202 dev eth0; sleep infinity"
         command: ["/bin/bash", "-c", "trap : TERM INT; sleep infinity & wait"]
         network_mode: host

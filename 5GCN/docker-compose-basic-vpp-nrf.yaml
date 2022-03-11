@@ -286,7 +286,7 @@ services:
             public_net_core:
                 ipv4_address: 192.168.73.134
     oai-ext-dn:
-        image: ubuntu:latest
+        image: ubuntu:webserver
         privileged: true
         container_name: "oai-ext-dn"
         entrypoint: /bin/bash -c \

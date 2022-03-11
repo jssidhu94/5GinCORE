@@ -136,8 +136,8 @@ node n2 {
 	!
     }
     canvas c1
-    iconcoords {822.0 303.0}
-    labelcoords {822.0 284.0}
+    iconcoords {831.0 259.0}
+    labelcoords {831.0 240.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -922,11 +922,11 @@ node n7 {
 	hostname UPF3
 	!
 	interface eth2
-	 ipv6 address 2001:5::10/64
+	 ipv6 address 2001:2::10/64
 	 ip address 192.168.72.144/24
 	!
 	interface eth1
-	 ipv6 address 2001:3::10/64
+	 ipv6 address 2001:1::11/64
 	 ip address 192.168.73.144/24
 	!
 	interface eth0
@@ -1712,6 +1712,39 @@ node n12 {
     iconcoords {1202.0 259.0}
     labelcoords {1204.0 240.0}
     custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('5gc.sh', )
+	cmdup=('bash 5gc.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:5gc.sh
+	custom-command 5gc.sh
+	config {
+	#!/bin/sh
+	
+	#gnome-terminal
+	cp /home/core/5GinCORE/ . -r
+	}
+    }
+    custom-config {
+	custom-config-id service:DNSresolve
+	custom-command DNSresolve
+	config {
+	files=('/run/resolvconf/resolv.conf', )
+	}
+    }
+    custom-config {
+	custom-config-id service:DNSresolve:/run/resolvconf/resolv.conf
+	custom-command /run/resolvconf/resolv.conf
+	config {
+	nameserver 127.0.0.1
+	
+	}
+    }
+    custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
 	config {
@@ -1747,24 +1780,6 @@ node n12 {
 	service docker start
 	sleep 1
 	docker-compose -f ./5GinCORE/Slicing/smf1.yaml up -d
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined
-	custom-command UserDefined
-	config {
-	files=('5gc.sh', )
-	cmdup=('bash 5gc.sh', )
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined:5gc.sh
-	custom-command 5gc.sh
-	config {
-	#!/bin/sh
-	
-	#gnome-terminal
-	cp /home/core/5GinCORE/ . -r
 	}
     }
     custom-config {
@@ -2160,20 +2175,20 @@ node n17 {
     type router
     model host
     network-config {
-	hostname EX-DN
+	hostname DN
 	!
 	interface eth1
+	 ipv6 address 2001:1::10/64
+	 ip address 192.168.73.145/24
+	!
+	interface eth0
 	 ipv6 address 2001:0::24/64
 	 ip address 192.168.70.145/24
 	!
-	interface eth0
-	 ipv6 address 2001:3::11/64
-	 ip address 192.167.73.145/24
-	!
     }
     canvas c1
-    iconcoords {1417.0 396.0}
-    labelcoords {1415.0 377.0}
+    iconcoords {1380.0 395.0}
+    labelcoords {1378.0 376.0}
     custom-config {
 	custom-config-id service:UserDefined
 	custom-command UserDefined
@@ -2309,8 +2324,8 @@ node n17 {
 	}
     }
     services {Docker UserDefined}
-    interface-peer {eth0 n7}
-    interface-peer {eth1 n18}
+    interface-peer {eth0 n18}
+    interface-peer {eth1 n7}
 }
 
 node n18 {
@@ -2338,8 +2353,8 @@ node n18 {
     interface-peer {e13 n6}
     interface-peer {e14 n19}
     interface-peer {e15 n20}
-    interface-peer {e16 n21}
     interface-peer {e17 n17}
+    interface-peer {e16 n21}
 }
 
 node n19 {
@@ -2361,7 +2376,25 @@ node n19 {
     iconcoords {376.0 394.0}
     labelcoords {378.0 436.0}
     interface-peer {eth0 n18}
-    services {Docker UserDefined}
+    services {UserDefined}
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('5gran.sh', )
+	cmdup=('sh 5gran.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:5gran.sh
+	custom-command 5gran.sh
+	config {
+	cp /home/core/5GinCORE/Slicing/ran1gnb.yaml . 
+	cp /home/core/UERANSIM/ . -r
+	sleep 85
+	./UERANSIM/build/nr-gnb -c ran1gnb.yaml
+	}
+    }
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -2398,30 +2431,6 @@ node n19 {
 	service docker start
 	sleep 1
 	#docker-compose -f ./oai-cn5g-fed/docker-compose/Slicing/ran1.yaml up -d
-	
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined
-	custom-command UserDefined
-	config {
-	files=('5gc.sh', '5gran.sh', )
-	cmdup=('sh 5gc.sh', )
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined:5gran.sh
-	custom-command 5gran.sh
-	config {
-	cp /home/core/5GinCORE/oai-cn5g-fed/docker-compose/ran1.yaml .
-	
-	}
-    }
-    custom-config {
-	custom-config-id service:UserDefined:5gc.sh
-	custom-command 5gc.sh
-	config {
-	cp /home/core/5GinCORE/. -r
 	
 	}
     }
@@ -2510,21 +2519,19 @@ node n21 {
     network-config {
 	hostname gNB3
 	!
-	interface eth0
-	 ipv6 address 2001:5::1/64
+	interface eth1
+	 ipv6 address 2001:2::1/64
 	 ip address 192.168.72.143/24
 	!
-	interface eth1
+	interface eth0
 	 ipv6 address 2001:0::3/64
 	 ip address 192.168.70.156/24
 	!
     }
     canvas c1
-    iconcoords {380.0 677.0}
-    labelcoords {382.0 715.0}
+    iconcoords {384.0 675.0}
+    labelcoords {386.0 713.0}
     services {Docker UserDefined}
-    interface-peer {eth0 n7}
-    interface-peer {eth1 n18}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -2580,6 +2587,8 @@ node n21 {
 	cp /home/core/5GinCORE/ . -r
 	}
     }
+    interface-peer {eth0 n18}
+    interface-peer {eth1 n7}
 }
 
 node n22 {
@@ -2595,8 +2604,65 @@ node n22 {
     }
     canvas c1
     iconcoords {131.0 393.0}
-    labelcoords {131.0 425.0}
+    labelcoords {132.0 431.0}
     interface-peer {eth0 n19}
+    custom-config {
+	custom-config-id service:UserDefined
+	custom-command UserDefined
+	config {
+	files=('ue.sh', )
+	cmdup=('sh ue.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:UserDefined:ue.sh
+	custom-command ue.sh
+	config {
+	cp /home/core/5GinCORE/Slicing/ran1ue.yaml .
+	cp /home/core/UERANSIM/ . -r
+	sleep 87
+	gnome-terminal -e ./UERANSIM/build/nr-ue -c ran1ue.yaml
+	
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker
+	custom-command Docker
+	config {
+	files=('startdocker.sh', 'stopdocker.sh', )
+	}
+    }
+    custom-config {
+	custom-config-id service:Docker:startdocker.sh
+	custom-command startdocker.sh
+	config {
+	#!/bin/sh
+	sleep 89
+	echo "nameserver 8.8.8.8" > /run/resolvconf/resolv.conf
+	echo DOCKER_OPTS=\"--dns 8.8.8.8 --exec-opt native.cgroupdriver=cgroupfs -g $PWD/docker\" > /etc/default/docker
+	mkdir -p docker/overlay2 
+	mount -o bind /var/lib/docker/overlay2/ docker/overlay2/
+	mkdir mymnt 
+	mount -o bind mymnt/ docker/overlay2/mnt/
+	ln -s /var/lib/docker/image/ docker/image
+	CGROUP=/sys/fs/cgroup
+	mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP
+	for SUBSYS in $(cut -d: -f2 /proc/1/cgroup)
+	do
+	        mkdir $CGROUP/$SUBSYS
+	        mountpoint -q $CGROUP/$SUBSYS
+	        mount -n -t cgroup -o $SUBSYS cgroup $CGROUP/$SUBSYS
+	        echo $SUBSYS | grep -q ^name= && {
+	                NAME=$(echo $SUBSYS | sed s/^name=//)
+	                ln -s $SUBSYS $CGROUP/$NAME
+	        }
+	        [ $SUBSYS = cpuacct,cpu ] && ln -s $SUBSYS $CGROUP/cpu,cpuacct
+	done
+	service docker start
+	
+	}
+    }
+    services {UserDefined}
 }
 
 node n23 {
@@ -2612,7 +2678,7 @@ node n23 {
     }
     canvas c1
     iconcoords {132.0 523.0}
-    labelcoords {132.0 555.0}
+    labelcoords {132.0 564.0}
     interface-peer {eth0 n20}
 }
 
@@ -2686,11 +2752,6 @@ link l14 {
     bandwidth 0
 }
 
-link l17 {
-    nodes {n7 n17}
-    bandwidth 0
-}
-
 link l18 {
     nodes {n19 n18}
     bandwidth 0
@@ -2698,16 +2759,6 @@ link l18 {
 
 link l19 {
     nodes {n20 n18}
-    bandwidth 0
-}
-
-link l21 {
-    nodes {n21 n7}
-    bandwidth 0
-}
-
-link l22 {
-    nodes {n21 n18}
     bandwidth 0
 }
 
@@ -2723,6 +2774,21 @@ link l24 {
 
 link l15 {
     nodes {n18 n17}
+    bandwidth 0
+}
+
+link l16 {
+    nodes {n17 n7}
+    bandwidth 0
+}
+
+link l17 {
+    nodes {n21 n18}
+    bandwidth 0
+}
+
+link l20 {
+    nodes {n21 n7}
     bandwidth 0
 }
 
@@ -3379,6 +3445,80 @@ annotation a90 {
     border black
     rad 0
     effects {bold}
+    canvas c1
+}
+
+annotation a65 {
+    iconcoords {287.0 664.0 374.0 696.0}
+    type rectangle
+    label {UE----gNB}
+    labelcolor black
+    fontfamily {FontAwesome}
+    fontsize {10}
+    color #C0C0FF
+    width 0
+    border black
+    rad 2
+    canvas c1
+}
+
+annotation a66 {
+    iconcoords {1314.0 309.0 1448.0 513.0}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {12}
+    color #CFCFFF
+    width 0
+    border black
+    effects {bold}
+    canvas c1
+}
+
+annotation a67 {
+    iconcoords {1360.0 454.0}
+    type text
+    label {Data}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {12}
+    effects {bold}
+    canvas c1
+}
+
+annotation a75 {
+    iconcoords {1350.0 473.0}
+    type text
+    label {Network}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {12}
+    effects {bold}
+    canvas c1
+}
+
+annotation a76 {
+    iconcoords {334.0 705.0}
+    type text
+    label {UE3/}
+    labelcolor #0000ff
+    fontfamily {Arial}
+    fontsize {11}
+    canvas c1
+}
+
+annotation a77 {
+    type text
+    iconcoords {398.0 707.0}
+    label {}
+    canvas c1
+}
+
+annotation a93 {
+    type text
+    iconcoords {265.0 633.0}
+    label {}
     canvas c1
 }
 

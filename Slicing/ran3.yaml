@@ -24,22 +24,11 @@ services:
             - NRCellID=1
             - USE_FQDN=no
             - NGAPPeerAddr=192.168.70.138
-            - GTPuLocalAddr=192.168.70.156
-            - GTPuIFname=eth0
-        networks:
-            public_net:
-                ipv4_address: 192.168.70.156
-            public_net_access:
-                ipv4_address: 192.168.72.156
+            - GTPuLocalAddr=192.168.72.141
+            - GTPuIFname=eth1
+        network_mode: host
         healthcheck:
             test: /bin/bash -c "ifconfig gtp-gnb"
             interval: 10s
             timeout: 5s
             retries: 5
-networks:
-    public_net:
-        external:
-            name: demo-oai-public-net
-    public_net_access:
-        external:
-            name: oai-public-access
