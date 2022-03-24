@@ -5,7 +5,7 @@ nci: '0x000000030'  # NR Cell Identity (36-bit)
 idLength: 32        # NR gNB ID length in bits [22...32]
 tac: 40960          # Tracking Area Code
 
-linkIp: 10.0.2.2   # gNB's local IP address for Radio Link Simulation (Usually same with local IP)
+linkIp: 10.0.0.6   # gNB's local IP address for Radio Link Simulation (Usually same with local IP)
 ngapIp: 192.168.70.3   # gNB's local IP address for N2 Interface (Usually same with local IP)
 gtpIp: 192.168.72.143    # gNB's local IP address for N3 Interface (Usually same with local IP)
 

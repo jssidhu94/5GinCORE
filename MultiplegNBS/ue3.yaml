@@ -20,7 +20,10 @@ imeiSv: '0035609204079514'
 
 # List of gNB IP addresses for Radio Link Simulation
 gnbSearchList:
-  - 10.0.2.2
+  - 10.0.0.8
+  - 10.0.0.7
+  - 10.0.0.6
+  - 10.0.0.4
 
 # UAC Access Identities Configuration
 uacAic:

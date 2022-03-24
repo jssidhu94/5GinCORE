@@ -9,8 +9,8 @@ node n1 {
 	!
     }
     canvas c1
-    iconcoords {506.0 225.0}
-    labelcoords {508.0 206.0}
+    iconcoords {577.0 233.0}
+    labelcoords {579.0 214.0}
     custom-config {
 	custom-config-id service:UserDefined
 	custom-command UserDefined
@@ -170,8 +170,8 @@ node n2 {
 	!
     }
     canvas c1
-    iconcoords {763.0 516.0}
-    labelcoords {764.0 555.0}
+    iconcoords {768.0 657.0}
+    labelcoords {769.0 696.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -319,12 +319,12 @@ node n2 {
 node n3 {
     type lanswitch
     network-config {
-	hostname CPswitch
+	hostname Switch
 	!
     }
     canvas c1
-    iconcoords {764.0 368.0}
-    labelcoords {764.0 396.0}
+    iconcoords {767.0 368.0}
+    labelcoords {767.0 392.0}
     interface-peer {e0 n1}
     interface-peer {e1 n2}
     interface-peer {e2 n4}
@@ -370,8 +370,8 @@ node n4 {
 	!
     }
     canvas c1
-    iconcoords {639.0 228.0}
-    labelcoords {635.0 207.0}
+    iconcoords {707.0 232.0}
+    labelcoords {703.0 211.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -525,8 +525,8 @@ node n5 {
 	!
     }
     canvas c1
-    iconcoords {887.0 228.0}
-    labelcoords {883.0 207.0}
+    iconcoords {957.0 236.0}
+    labelcoords {953.0 215.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -681,8 +681,8 @@ node n6 {
 	!
     }
     canvas c1
-    iconcoords {999.0 319.0}
-    labelcoords {1002.0 357.0}
+    iconcoords {945.0 508.0}
+    labelcoords {948.0 546.0}
     custom-config {
 	custom-config-id service:UserDefined
 	custom-command UserDefined
@@ -832,8 +832,8 @@ node n7 {
 	!
     }
     canvas c1
-    iconcoords {999.0 417.0}
-    labelcoords {997.0 455.0}
+    iconcoords {828.0 506.0}
+    labelcoords {826.0 544.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -987,8 +987,8 @@ node n8 {
 	!
     }
     canvas c1
-    iconcoords {765.0 226.0}
-    labelcoords {761.0 205.0}
+    iconcoords {846.0 235.0}
+    labelcoords {842.0 214.0}
     custom-config {
 	custom-config-id service:UserDefined
 	custom-command UserDefined
@@ -1140,8 +1140,8 @@ node n9 {
 	!
     }
     canvas c1
-    iconcoords {998.0 230.0}
-    labelcoords {998.0 208.0}
+    iconcoords {695.0 510.0}
+    labelcoords {693.0 547.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -1296,8 +1296,8 @@ node n10 {
 	!
     }
     canvas c1
-    iconcoords {1230.0 516.0}
-    labelcoords {1231.0 551.0}
+    iconcoords {1210.0 367.0}
+    labelcoords {1211.0 402.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -2179,12 +2179,12 @@ node n21 {
 node n19 {
     type lanswitch
     network-config {
-	hostname UPswitch
+	hostname n19
 	!
     }
     canvas c1
-    iconcoords {502.0 515.0}
-    labelcoords {502.0 539.0}
+    iconcoords {533.0 554.0}
+    labelcoords {533.0 578.0}
     interface-peer {e0 n11}
     interface-peer {e1 n13}
     interface-peer {e2 n14}
@@ -2326,7 +2326,7 @@ link l9 {
 }
 
 annotation a1 {
-    iconcoords {403 110 1108 614}
+    iconcoords {419 123 1108 584}
     type rectangle
     label {5G Core Network}
     labelcolor black
@@ -2348,7 +2348,7 @@ annotation a6 {
 }
 
 annotation a7 {
-    iconcoords {215 123 389 586}
+    iconcoords {239 130 401 581}
     type rectangle
     label {5G RAN}
     labelcolor black
@@ -2363,7 +2363,7 @@ annotation a7 {
 }
 
 annotation a8 {
-    iconcoords {1137 362 1312 595}
+    iconcoords {1126 238 1295 465}
     type oval
     label {}
     labelcolor black
@@ -2376,7 +2376,7 @@ annotation a8 {
 }
 
 annotation a9 {
-    iconcoords {1175.0 429.0}
+    iconcoords {1152.0 303.0}
     type text
     label {External Data}
     labelcolor black
@@ -2387,7 +2387,7 @@ annotation a9 {
 }
 
 annotation a10 {
-    iconcoords {1195.0 448.0}
+    iconcoords {1169.0 328.0}
     type text
     label {Network}
     labelcolor black
@@ -2449,10 +2449,10 @@ annotation a20 {
 annotation a27 {
     iconcoords {67.0 80.0}
     type text
-    label {Multiple gNBs to 5GC}
+    label {Multiple gNBs}
     labelcolor black
     fontfamily {aakar}
-    fontsize 16
+    fontsize {16}
     effects {bold underline}
     canvas c1
 }
@@ -2488,8 +2488,8 @@ canvas c1 {
 }
 
 option global {
-    interface_names no
-    ip_addresses no
+    interface_names yes
+    ip_addresses yes
     ipv6_addresses no
     node_labels yes
     link_labels yes

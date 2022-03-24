@@ -2,7 +2,7 @@ version: '3.8'
 services:
     oai-udr:
         container_name: "oai-udr"
-        image: oai-udr:latest
+        image: rdefosseoai/oai-udr:develop
         environment:
             - TZ=Europe/Paris
             - INSTANCE=0
@@ -16,6 +16,12 @@ services:
             - MYSQL_PASS=test
             - MYSQL_DB=oai_db
             - WAIT_MYSQL=120
+            - USE_FQDN_DNS=no
+            - REGISTER_NRF=yes
+            - NRF_IPV4_ADDRESS=192.168.70.130
+            - NRF_PORT=80
+            - NRF_API_VERSION=v1
+            - NRF_FQDN=oai-nrf
         network_mode: host
         volumes:
             - ./udr-healthcheck.sh:/openair-udr/bin/udr-healthcheck.sh

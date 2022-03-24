@@ -2773,11 +2773,13 @@ link l24 {
 }
 
 link l15 {
+    color Green
     nodes {n18 n17}
     bandwidth 0
 }
 
 link l16 {
+    color Green
     nodes {n17 n7}
     bandwidth 0
 }
@@ -2788,6 +2790,7 @@ link l17 {
 }
 
 link l20 {
+    color Green
     nodes {n21 n7}
     bandwidth 0
 }
@@ -3448,20 +3451,6 @@ annotation a90 {
     canvas c1
 }
 
-annotation a65 {
-    iconcoords {287.0 664.0 374.0 696.0}
-    type rectangle
-    label {UE----gNB}
-    labelcolor black
-    fontfamily {FontAwesome}
-    fontsize {10}
-    color #C0C0FF
-    width 0
-    border black
-    rad 2
-    canvas c1
-}
-
 annotation a66 {
     iconcoords {1314.0 309.0 1448.0 513.0}
     type oval
@@ -3519,6 +3508,171 @@ annotation a93 {
     type text
     iconcoords {265.0 633.0}
     label {}
+    canvas c1
+}
+
+annotation a94 {
+    iconcoords {102.0 35.0}
+    type text
+    label {Network Slicing in 5G SA}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {16}
+    effects {bold underline}
+    canvas c1
+}
+
+annotation a95 {
+    iconcoords {1287 7 1443 50}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #fc9c88
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a96 {
+    iconcoords {1288.0 52.0 1443.0 97.0}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #89ffff
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a97 {
+    iconcoords {1294.0 103.0 1445.0 152.0}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #ffff83
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a99 {
+    iconcoords {1344.0 20.0}
+    type text
+    label {sst=2}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {12}
+    effects {bold}
+    canvas c1
+}
+
+annotation a98 {
+    iconcoords {1344.0 35.0}
+    type text
+    label {sd=2}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {12}
+    effects {bold}
+    canvas c1
+}
+
+annotation a100 {
+    iconcoords {1349.0 82.0}
+    type text
+    label {sd=3}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {12}
+    effects {bold}
+    canvas c1
+}
+
+annotation a101 {
+    iconcoords {1348.0 66.0}
+    type text
+    label {sst=3}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {12}
+    effects {bold}
+    canvas c1
+}
+
+annotation a102 {
+    iconcoords {1352.0 134.0}
+    type text
+    label {sd=4}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {12}
+    effects {bold}
+    canvas c1
+}
+
+annotation a103 {
+    iconcoords {1350.0 119.0}
+    type text
+    label {sst=3}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {12}
+    effects {bold}
+    canvas c1
+}
+
+annotation a104 {
+    iconcoords {84.0 356.0 407.0 434.0}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #fc9c88
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a106 {
+    iconcoords {89.0 481.0 426.0 572.0}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #89ffff
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a107 {
+    iconcoords {239 639 406 704}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #ffff83
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a65 {
+    iconcoords {290.0 674.0}
+    type text
+    label {UE----gNB}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize 12
     canvas c1
 }
 

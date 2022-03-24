@@ -9,8 +9,8 @@ node n1 {
 	!
     }
     canvas c1
-    iconcoords {406.0 195.0}
-    labelcoords {408.0 177.0}
+    iconcoords {403.0 250.0}
+    labelcoords {405.0 232.0}
     custom-config {
 	custom-config-id service:UserDefined
 	custom-command UserDefined
@@ -168,8 +168,8 @@ node n2 {
 	!
     }
     canvas c1
-    iconcoords {707.0 527.0}
-    labelcoords {708.0 566.0}
+    iconcoords {708.0 589.0}
+    labelcoords {709.0 628.0}
     custom-config {
 	custom-config-id service:UserDefined
 	custom-command UserDefined
@@ -321,8 +321,8 @@ node n3 {
 	!
     }
     canvas c1
-    iconcoords {708.0 321.0}
-    labelcoords {708.0 345.0}
+    iconcoords {709.0 399.0}
+    labelcoords {709.0 423.0}
     interface-peer {e0 n1}
     interface-peer {e1 n2}
     interface-peer {e2 n4}
@@ -364,8 +364,8 @@ node n4 {
 	!
     }
     canvas c1
-    iconcoords {564.0 191.0}
-    labelcoords {560.0 170.0}
+    iconcoords {563.0 245.0}
+    labelcoords {559.0 224.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -519,8 +519,8 @@ node n5 {
 	!
     }
     canvas c1
-    iconcoords {783.0 194.0}
-    labelcoords {779.0 173.0}
+    iconcoords {767.0 246.0}
+    labelcoords {763.0 225.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -675,8 +675,8 @@ node n6 {
 	!
     }
     canvas c1
-    iconcoords {925.0 195.0}
-    labelcoords {921.0 174.0}
+    iconcoords {935.0 253.0}
+    labelcoords {931.0 232.0}
     custom-config {
 	custom-config-id service:UserDefined
 	custom-command UserDefined
@@ -826,8 +826,8 @@ node n7 {
 	!
     }
     canvas c1
-    iconcoords {1069.0 197.0}
-    labelcoords {1065.0 176.0}
+    iconcoords {1072.0 254.0}
+    labelcoords {1068.0 233.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -981,8 +981,8 @@ node n8 {
 	!
     }
     canvas c1
-    iconcoords {406.0 321.0}
-    labelcoords {402.0 300.0}
+    iconcoords {405.0 399.0}
+    labelcoords {401.0 378.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -1136,8 +1136,8 @@ node n9 {
 	!
     }
     canvas c1
-    iconcoords {1074.0 322.0}
-    labelcoords {1070.0 301.0}
+    iconcoords {1078.0 398.0}
+    labelcoords {1074.0 377.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -1291,8 +1291,8 @@ node n10 {
 	!
     }
     canvas c1
-    iconcoords {1241.0 526.0}
-    labelcoords {1242.0 561.0}
+    iconcoords {1239.0 589.0}
+    labelcoords {1240.0 624.0}
     custom-config {
 	custom-config-id service:Docker
 	custom-command Docker
@@ -1453,8 +1453,8 @@ node n11 {
 	!
     }
     canvas c1
-    iconcoords {300.0 526.0}
-    labelcoords {301.0 565.0}
+    iconcoords {296.0 589.0}
+    labelcoords {297.0 628.0}
     custom-config {
 	custom-config-id service:UserDefined
 	custom-command UserDefined
@@ -1626,8 +1626,8 @@ node n12 {
 	!
     }
     canvas c1
-    iconcoords {26.0 527.0}
-    labelcoords {27.0 567.0}
+    iconcoords {25.0 588.0}
+    labelcoords {26.0 628.0}
     interface-peer {eth0 n11}
     custom-config {
 	custom-config-id service:UserDefined
@@ -1733,22 +1733,26 @@ link l10 {
 }
 
 link l11 {
+    color Green
     nodes {n11 n2}
     bandwidth 0
 }
 
 link l9 {
+    width 2
+    color Green
     nodes {n2 n10}
     bandwidth 0
 }
 
 link l12 {
+    color Red
     nodes {n12 n11}
     bandwidth 0
 }
 
 annotation a1 {
-    iconcoords {345 93 1130 599}
+    iconcoords {342.0 141.0 1131.0 664.0}
     type rectangle
     label {5G Core Network}
     labelcolor black
@@ -1763,7 +1767,7 @@ annotation a1 {
 }
 
 annotation a2 {
-    iconcoords {474.0 516.0}
+    iconcoords {490.0 575.0}
     type text
     label {N3}
     labelcolor black
@@ -1774,7 +1778,7 @@ annotation a2 {
 }
 
 annotation a3 {
-    iconcoords {882.0 515.0}
+    iconcoords {962.0 574.0}
     type text
     label {N6}
     labelcolor black
@@ -1785,7 +1789,7 @@ annotation a3 {
 }
 
 annotation a4 {
-    iconcoords {409.0 425.0}
+    iconcoords {461.0 481.0}
     type text
     label {N1/N2}
     labelcolor black
@@ -1803,7 +1807,7 @@ annotation a6 {
 }
 
 annotation a7 {
-    iconcoords {165.0 377.0 339.0 592.0}
+    iconcoords {160 444 338 663}
     type rectangle
     label {5G Access  Network}
     labelcolor black
@@ -1818,7 +1822,7 @@ annotation a7 {
 }
 
 annotation a8 {
-    iconcoords {1165.0 391.0 1312.0 596.0}
+    iconcoords {1157 446 1310 657}
     type oval
     label {}
     labelcolor black
@@ -1831,7 +1835,7 @@ annotation a8 {
 }
 
 annotation a9 {
-    iconcoords {1186.0 455.0}
+    iconcoords {1182.0 504.0}
     type text
     label {External Data}
     labelcolor black
@@ -1842,7 +1846,7 @@ annotation a9 {
 }
 
 annotation a10 {
-    iconcoords {1209.0 476.0}
+    iconcoords {1203.0 529.0}
     type text
     label {Network}
     labelcolor black
@@ -1853,7 +1857,7 @@ annotation a10 {
 }
 
 annotation a5 {
-    iconcoords {718.0 415.0}
+    iconcoords {716.0 484.0}
     type text
     label {N4}
     labelcolor black
@@ -1867,6 +1871,74 @@ annotation a11 {
     type text
     iconcoords {409.0 185.0}
     label {}
+    canvas c1
+}
+
+annotation a12 {
+    iconcoords {52.0 68.0}
+    type text
+    label {5G Network (Standalone)}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {16}
+    effects {bold underline}
+    canvas c1
+}
+
+annotation a13 {
+    iconcoords {1182.0 45.0 1244.0 47.0}
+    type rectangle
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #00a400
+    width 1
+    border #007800
+    rad 1
+    canvas c1
+}
+
+annotation a14 {
+    iconcoords {1182.0 60.0 1246.0 62.0}
+    type rectangle
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #ff0000
+    width 1
+    border #ff0000
+    rad 1
+    canvas c1
+}
+
+annotation a15 {
+    iconcoords {1266.0 45.0}
+    type text
+    label {data}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize 12
+    effects {bold}
+    canvas c1
+}
+
+annotation a16 {
+    type text
+    iconcoords {1289.0 47.0}
+    label {}
+    canvas c1
+}
+
+annotation a17 {
+    iconcoords {1266.0 62.0}
+    type text
+    label {control}
+    labelcolor black
+    fontfamily {aakar}
+    fontsize {12}
+    effects {bold}
     canvas c1
 }
 
